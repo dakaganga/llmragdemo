@@ -37,22 +37,15 @@ def findSimilarites(prompt1):
     for s in similarites:
         if s >0.69:
             matched_similarities.append(similarites.index(s))
-   # most_similar_index = similarites.index(max(similarites))
-    
     return matched_similarities
 
-question ='list oout the patient names who had comonoscopy'
+
 def buildContext():
     matched_claim_index=findSimilarites(question)
     context_2 =""
     for s in matched_claim_index:
         context_2 += readClaimFiles()[s]
-    #print(contenxt)
     return context_2
-#question = "What is the population of Jacksonville, Florida as of 2023?"
-
-#context = "As of the most current census, Jacksonville, Florida has a population of 1 million."
-
 
 def query(question):
     context_1=buildContext()
@@ -63,8 +56,6 @@ def query(question):
     Question: {question}
     """
 
-    print(prompt)
-   
     payload = {
         "inputs": prompt,
         "parameters": { #Try and experiment with the parameters
@@ -79,5 +70,5 @@ def query(question):
     return response.json()[0]['generated_text']
 
 
-
+question ='list oout the patient names who had comonoscopy'
 print(query(question))
