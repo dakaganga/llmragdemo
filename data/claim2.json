@@ -1,0 +1,9 @@
+{
+    "claimNumber": "Claim_12345",
+    "dateOfService": "01-15-2023",
+    "procedureCode": "95065-Nasal Allergy",
+    "PlaceOfService": "11-Office Visit",
+    "patientName": "Bob williams",
+    "providername": "Dr David",
+    "claimsNarrative":" Bob Williams visited Dr David for his Nasal Allergy testing  on Jan 15th 2023 at provider office location"
+}

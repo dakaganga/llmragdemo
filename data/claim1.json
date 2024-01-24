@@ -1,0 +1,9 @@
+{
+    "claimNumber": "Claim_1234",
+    "dateOfService": "01-15-2024",
+    "procedureCode": "45378-Colonoscopy",
+    "PlaceOfService": "22-OutPatient",
+    "patientName": "John Doe",
+    "providername": "Dr Bob",
+    "claimsNarrative":"John Doe visited Dr Bob for his Colonoscopy procedure on Jan 15th 2024 at provider OutPatient location"
+}
