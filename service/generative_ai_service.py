@@ -6,6 +6,7 @@ import gensim
 from nltk.tokenize import sent_tokenize, word_tokenize
 from transformers import pipeline
 import torch
+from vecotrdb import vectordb_con
 
 API_TOKEN = "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" #os.environ["API_TOKEN"] #Set a API_TOKEN environment variable before running
 #API_URL = "" #Add a URL for a model of your choosing
@@ -40,6 +41,32 @@ def findSimilarites(prompt1):
     return matched_similarities
 
 
+
+def findSimilarites_from_vectordb(prompt1):
+   collection=vectordb_con.getCollection()
+   claims=readClaimFiles()
+   claimdocid=1
+   for claimtext in claims:
+        collection.add(
+        documents=[claimtext],
+        metadatas=[{"type": "text"}],
+        ids=[str(claimdocid)]
+        )
+        claimdocid = claimdocid+1
+   result = vectordb_con.query_collection(collection, prompt1)
+
+   matched_result=result.get("documents")
+   print(matched_result[0])
+   return matched_result[0]
+
+def buildContext_1():
+    matched_claim_data=findSimilarites_from_vectordb(question)
+    context_2 =""
+    for s in matched_claim_data:
+        print(s)
+        context_2 += s
+    return context_2
+
 def buildContext():
     matched_claim_index=findSimilarites(question)
     context_2 =""
@@ -48,7 +75,7 @@ def buildContext():
     return context_2
 
 def query(question):
-    context_1=buildContext()
+    context_1=buildContext_1()
     prompt = f"""Use the following context to answer the question at the end.
 
     {context_1}
@@ -69,6 +96,6 @@ def query(question):
     response = requests.post(API_URL, headers=headers, json=payload)
     return response.json()[0]['generated_text']
 
-
-question ='list oout the patient names who had comonoscopy, what procedure performed to jane doe'
+#question ='list oout the patient names who had comonoscopy, what procedure performed to jane doe'
+question ='list out the patient names who had comonoscopy'
 #print(query(question))

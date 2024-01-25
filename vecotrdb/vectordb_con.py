@@ -1,6 +1,7 @@
 import chromadb
 import PyPDF2
 from sentence_transformers import SentenceTransformer
+import service.generative_ai_service
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
@@ -30,11 +31,22 @@ def add_pdf_to_collection(collection, pdf_path, metadata, doc_id):
         ids=[doc_id]
     )
 
+def add_text_to_collection(collection, metadata, doc_id):
+    claims=service.generative_ai_service.readClaimFiles()
+    claimdocid=1
+    for claimtext in claims:
+        collection.add(
+        documents=[claimtext],
+        metadatas=[metadata],
+        ids=[claimdocid]
+        )
+        claimdocid = claimdocid+1
+
 # query collection
 def query_collection(collection, query_text):
     result = collection.query(
         query_texts=[query_text],
-        n_results=1
+        n_results=2
     )
     return result
 
@@ -47,7 +59,10 @@ def query_collection(collection, query_text):
 # 5. Use llm to generate a responce 
 # 6. Handle output (display or store)
 
-
+def getCollection():
+    collection_name = "my_collection"
+    collection = client.get_or_create_collection(name=collection_name)
+    return collection
 
 def main():
     # Assuming you have a client setup as shown in previous examples
@@ -56,12 +71,12 @@ def main():
 
     # Add a PDF file to the collection
     pdf_path = "./dummy.pdf"  # Update this path to your PDF file
-    metadata = {"type": "document"}
+    metadata = {"type": "text"}
     doc_id = "sample_doc"
-    add_pdf_to_collection(collection, pdf_path, metadata, doc_id)
-
+    #add_pdf_to_collection(collection, pdf_path, metadata, doc_id)
+    add_text_to_collection(collection,metadata)
     # Query the collection
-    query_text = "What does the document say?"
+    query_text = "list oout the patient names who had comonoscopy?"
     result = query_collection(collection, query_text)
 
     # Print the results
