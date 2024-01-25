@@ -8,7 +8,7 @@ def embed_text(text):
     return model.encode(text)
 
 # Local db mode
-client = chromadb.PersistentClient(path="./")
+client = chromadb.Client()
 
 # Client-server mode. Run using chroma run --path /db_path
 # chroma_client = chromadb.HttpClient(host='localhost', port=8000)

@@ -18,7 +18,7 @@
         const response = await fetch(final_url);
 
 
-  document.getElementById("demo").innerHTML =  await response.json();
+  document.getElementById("demo").innerHTML =  JSON.stringify(await response.json()).replace("\\n","</br>");
  
   //console.log(movies);
   //        var requestOptions = {
