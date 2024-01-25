@@ -5,7 +5,7 @@
     <title>GenAI Welcome-Ganga</title>
 
     <script>
-        function getAnswer() {
+        async function getAnswer() {
             
           // Selecting the input element and get its value
           var inputVal = document.getElementById("question").value;
@@ -15,10 +15,10 @@
           var final_url=url+inputVal
        
 
-        const response =  fetch(final_url);
+        const response = await fetch(final_url);
 
 
-  document.getElementById("demo").innerHTML =  response.json();
+  document.getElementById("demo").innerHTML =  await response.json();
  
   //console.log(movies);
   //        var requestOptions = {
