@@ -71,4 +71,4 @@ def query(question):
 
 
 question ='list oout the patient names who had comonoscopy'
-print(query(question))
+#print(query(question))
