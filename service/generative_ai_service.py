@@ -70,5 +70,5 @@ def query(question):
     return response.json()[0]['generated_text']
 
 
-question ='list oout the patient names who had comonoscopy'
+question ='list oout the patient names who had comonoscopy, what procedure performed to jane doe'
 #print(query(question))
