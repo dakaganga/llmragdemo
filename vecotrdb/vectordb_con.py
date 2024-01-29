@@ -2,6 +2,7 @@ import chromadb
 import PyPDF2
 from sentence_transformers import SentenceTransformer
 import service.generative_ai_service
+from langchain_community.vectorstores import Chroma
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
@@ -44,12 +45,32 @@ def add_text_to_collection(collection, metadata, doc_id):
 
 # query collection
 def query_collection(collection, query_text):
+    print(query_text)
     result = collection.query(
         query_texts=[query_text],
         n_results=2
     )
     return result
 
+
+def Get_data(Question,DB, embedding):
+    persist_directory = DB
+    vectorstore =Chroma(persist_directory=persist_directory, embedding_function=embedding)
+    relevant_documents = vectorstore.similarity_search_with_score(Question)
+    sorted_results = sorted(relevant_documents, key=lambda x: x[1])
+   # return (sorted_results[0])
+    return (relevant_documents)
+
+'''
+db4 = Chroma(
+    client=client,
+    collection_name="my_collection",
+    embedding_function=embedding_function,
+)
+query = "What did the president say about Ketanji Brown Jackson"
+docs = db4.similarity_search(query)
+print(docs[0].page_content)
+'''
 # Quering for a RAG application:
 # 0. Add embeddings 
 # 1. Retrieve Documents
@@ -61,6 +82,7 @@ def query_collection(collection, query_text):
 
 def getCollection():
     collection_name = "my_collection"
+    client.delete_collection(name=collection_name)
     collection = client.get_or_create_collection(name=collection_name)
     return collection
 

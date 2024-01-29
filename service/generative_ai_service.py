@@ -54,16 +54,16 @@ def findSimilarites_from_vectordb(prompt1):
         )
         claimdocid = claimdocid+1
    result = vectordb_con.query_collection(collection, prompt1)
-
+   print(result)
    matched_result=result.get("documents")
-   print(matched_result[0])
+   
    return matched_result[0]
 
-def buildContext_1():
-    matched_claim_data=findSimilarites_from_vectordb(question)
+def buildContext_1(pompt2):
+    matched_claim_data=findSimilarites_from_vectordb(pompt2)
     context_2 =""
     for s in matched_claim_data:
-        print(s)
+        #print(s)
         context_2 += s
     return context_2
 
@@ -75,8 +75,8 @@ def buildContext():
     return context_2
 
 def query(question):
-    context_1=buildContext_1()
-    prompt = f"""Use the following context to answer the question at the end.
+    context_1=buildContext_1(question)
+    prompt = f"""Use the following context to answer the question at the end. just provide the answer no context or any other possible questions and aanswers
 
     {context_1}
 
@@ -87,8 +87,8 @@ def query(question):
         "inputs": prompt,
         "parameters": { #Try and experiment with the parameters
             "max_new_tokens": 1024,
-            "temperature": 0.6,
-            "top_p": 0.9,
+            "temperature": 0.9,
+            "top_p": 0.8,
             "do_sample": False,
             "return_full_text": False
         }
@@ -97,5 +97,5 @@ def query(question):
     return response.json()[0]['generated_text']
 
 #question ='list oout the patient names who had comonoscopy, what procedure performed to jane doe'
-question ='list out the patient names who had comonoscopy'
+#question ='list out the patient names who had comonoscopy'
 #print(query(question))
