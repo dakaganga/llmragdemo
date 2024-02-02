@@ -94,7 +94,7 @@ print(docs[0].page_content)
 
 def getCollection():
     collection_name = "my_collection"
-    client.delete_collection(name=collection_name)
+    #client.delete_collection(name=collection_name)
     collection = client.get_or_create_collection(name=collection_name,embedding_function=custom_embedder)
     return collection
 

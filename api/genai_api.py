@@ -22,3 +22,8 @@ def welcome(request: Request):
 @router.get("/genai/")
 async def get_answer(query:str):
     return generative_ai_service.query(query)
+
+@router.get("/load_data/")
+async def loaddata():
+    generative_ai_service.load_data_to_collection()
+    return "Data loaded successfully"

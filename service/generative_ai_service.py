@@ -40,19 +40,22 @@ def findSimilarites(prompt1):
             matched_similarities.append(similarites.index(s))
     return matched_similarities
 
-
-
-def findSimilarites_from_vectordb(prompt1):
-   collection=vectordb_con.getCollection()
-   claims=readClaimFiles()
-   claimdocid=1
-   for claimtext in claims:
+def load_data_to_collection():
+    collection=vectordb_con.getCollection()
+    claims=readClaimFiles()
+    claimdocid=1
+    for claimtext in claims:
         collection.add(
         documents=[claimtext],
         metadatas=[{"type": "text"}],
         ids=[str(claimdocid)]
         )
         claimdocid = claimdocid+1
+    vectordb_con.add_docs_to_collection(collection) 
+
+def findSimilarites_from_vectordb(prompt1):
+   collection=vectordb_con.getCollection()
+        
    result = vectordb_con.query_collection(collection, prompt1)
    print(result)
    matched_result=result.get("documents")
