@@ -51,11 +51,12 @@ def load_data_to_collection():
         ids=[str(claimdocid)]
         )
         claimdocid = claimdocid+1
-    vectordb_con.add_docs_to_collection(collection) 
+    #vectordb_con.add_docs_to_collection(collection) 
 
 def findSimilarites_from_vectordb(prompt1):
    collection=vectordb_con.getCollection()
-        
+   #print(prompt1)     
+   load_data_to_collection()
    result = vectordb_con.query_collection(collection, prompt1)
    print(result)
    matched_result=result.get("documents")
@@ -69,17 +70,17 @@ def buildContext_1(pompt2):
         #print(s)
         context_2 += s
     return context_2
-
+'''
 def buildContext():
     matched_claim_index=findSimilarites(question)
     context_2 =""
     for s in matched_claim_index:
         context_2 += readClaimFiles()[s]
     return context_2
-
+'''
 def query(question):
     context_1=buildContext_1(question)
-    prompt = f"""Use the following context to answer the question at the end. just provide the answer no context or any other possible questions and aanswers
+    prompt = f"""Use the following context to answer the question at the end. No other questions and answers include in the response. answer should be short
 
     {context_1}
 
@@ -100,5 +101,5 @@ def query(question):
     return response.json()[0]['generated_text']
 
 #question ='list oout the patient names who had comonoscopy, what procedure performed to jane doe'
-#question ='list out the patient names who had comonoscopy'
+#question ='list out the patient names who had colonoscopy' who had the nasal allergy
 #print(query(question))

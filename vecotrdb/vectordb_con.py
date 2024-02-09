@@ -3,10 +3,10 @@ import PyPDF2
 from sentence_transformers import SentenceTransformer
 import service.generative_ai_service
 from langchain_community.vectorstores import Chroma
-from vecotrdb.embedder import CustomEmbedder
-from utils.data_load_utils import load_data
+#from vecotrdb.embedder import CustomEmbedder
+#from utils.data_load_utils import load_data
 from langchain.text_splitter import CharacterTextSplitter,RecursiveCharacterTextSplitter
-custom_embedder=CustomEmbedder()
+#custom_embedder=CustomEmbedder()
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 def embed_text(text):
@@ -45,6 +45,7 @@ def add_text_to_collection(collection, metadata, doc_id):
         ids=[claimdocid]
         )
         claimdocid = claimdocid+1
+'''        
 def add_docs_to_collection(collection):
     document_splitter = RecursiveCharacterTextSplitter(chunk_size=25, chunk_overlap=10)
     document_chunks = document_splitter.split_documents(load_data())
@@ -54,7 +55,7 @@ def add_docs_to_collection(collection):
             metadatas=[{"source": chunk.metadata['source']}],
             ids=[chunk.metadata['source']+ str(count)]
          )
-
+'''
 # query collection
 def query_collection(collection, query_text):
     print(query_text)
@@ -67,7 +68,7 @@ def query_collection(collection, query_text):
 
 def Get_data(Question,DB, embedding):
     persist_directory = DB
-    vectorstore =Chroma(persist_directory=persist_directory, embedding_function=custom_embedder)
+    vectorstore =Chroma(persist_directory=persist_directory)
     relevant_documents = vectorstore.similarity_search_with_score(Question)
     sorted_results = sorted(relevant_documents, key=lambda x: x[1])
    # return (sorted_results[0])
@@ -95,13 +96,13 @@ print(docs[0].page_content)
 def getCollection():
     collection_name = "my_collection"
     #client.delete_collection(name=collection_name)
-    collection = client.get_or_create_collection(name=collection_name,embedding_function=custom_embedder)
+    collection = client.get_or_create_collection(name=collection_name)
     return collection
 
 def main():
     # Assuming you have a client setup as shown in previous examples
     collection_name = "my_collection"
-    collection = client.get_or_create_collection(name=collection_name,embedding_function=custom_embedder)
+    collection = client.get_or_create_collection(name=collection_name)
 
     # Add a PDF file to the collection
     pdf_path = "./dummy.pdf"  # Update this path to your PDF file
